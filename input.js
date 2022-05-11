@@ -1,14 +1,6 @@
 // ? setup interface to handle user input from stdin
 
-const move = {
-    w: "Move: up",
-    a: "Move: left",
-    s: "Move: down",
-    d: "Move: right",
-    g: "Say: good-game",
-    y: "Say: yes?",
-    p: "Say: well-played"
-}
+const { MOVES } = require('./constants');
 
 const setupInput = function (conn) {
     const stdin = process.stdin;
@@ -21,7 +13,7 @@ const setupInput = function (conn) {
             conn.end();
             process.exit();
         };
-        conn.write(move[key]);
+        conn.write(MOVES[key]);
         conn.on('data', (key) => {
             conn.write(key);
         })
