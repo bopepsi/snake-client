@@ -13,12 +13,9 @@ const connect = function () {
     return conn;
 };
 
-console.log("Connecting ...");
-const conn = connect();
-
-conn.on('data', (data) => {
-    console.log(data);
-})
+module.exports = {
+    connect,
+}
 
 // ? Consider what is happening in the code that you wrote so far:
 // * You used Node's net library (specifically, the createConnection function) to create an object named conn in the code above.
