@@ -1,17 +1,51 @@
 const net = require("net");
 
-// establishes a connection with the game server
+// ? setup interface to handle user input from stdin
+const setupInput = function () {
+    const stdin = process.stdin;
+    stdin.setRawMode(true);
+    stdin.setEncoding("utf8");
+    stdin.resume();
+
+    const handleUserInput = function () {
+        // your code here
+    };
+    stdin.on("data", handleUserInput);
+
+    return stdin;
+};
+
+const stdin = setupInput();
+
+// ? establishes a connection with the game server
 const connect = function () {
     const conn = net.createConnection({
-        host: // IP address here,
-        port: // PORT number here,
+        host: '165.227.47.243',// IP address here,
+        port: 50541// PORT number here,
     });
-
     // interpret incoming data as text
     conn.setEncoding("utf8");
+    conn.on('connect', () => {
+        console.log('Successfully connected to game server');
+        conn.write("Move: up");
+        conn.write('Name:TBD');
+    })
+
+    stdin.on("data", (key) => {
+        if (key === '\u0003') {
+            process.stdout.write(`bye!`);
+            conn.end();
+            process.exit();
+        };
+        conn.on('data', (key) => {
+            conn.write(key);
+        })
+    });
 
     return conn;
 };
+
+
 
 module.exports = {
     connect,
